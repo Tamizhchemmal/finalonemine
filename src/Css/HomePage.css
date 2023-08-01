@@ -1,0 +1,138 @@
+.home-card {
+  display: flex;
+  justify-content: center;
+}
+
+.home-count1,
+  .home-count2,
+  .home-count3{
+    font-size: 24px !important;
+  }
+
+.home-crd1,
+.home-crd2,
+.home-crd3 {
+  width: 20%;
+  box-sizing: border-box;
+  border: 2px solid #2f217e;
+  border-radius: 12px;
+  display: flex;
+  padding: 10px;
+  margin: 15px;
+}
+
+.home-crd2 {
+  border: 2px solid #57f8aa !important ;
+}
+
+.home-crd3 {
+  border: 2px solid #e12323 !important;
+}
+
+.home-count1,
+.home-icon1,
+.home-count2,
+.home-icon2,
+.home-count3,
+.home-icon3 {
+  text-align: center !important;
+}
+
+.icon1,
+.icon2,
+.icon3 {
+  font-size: 86px !important;
+  margin: 5px;
+}
+
+.home-row2 {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.home-search {
+  margin-left: 30px !important;
+}
+
+.batch-btn {
+  margin-right: 30px !important;
+}
+
+@media screen and (max-width:1024px) {
+  .home-crd1,
+  .home-crd2,
+  .home-crd3 {
+    width: 16%;
+    box-sizing: border-box;
+    border: 2px solid #2f217e;
+    border-radius: 12px;
+    display: flex;
+    padding: 7px;
+    margin: 10px;
+  }
+
+  .icon1,
+  .icon2,
+  .icon3 {
+    font-size: 56px !important;
+    margin: 5px !important;
+  }
+
+  .home-search {
+    margin-left: 20px !important;
+  }
+  
+  .batch-btn {
+    margin-right: 20px !important;
+  }
+
+  .home-search{
+    width: 250px !important;
+  }
+  .home-count1,
+  .home-count2,
+  .home-count3{
+    font-size: 18px !important;
+  }
+
+}
+
+@media screen and (max-width:768px) {
+  .home-crd1,
+  .home-crd2,
+  .home-crd3 {
+    width: 18%;
+    box-sizing: border-box;
+    border: 2px solid #2f217e;
+    border-radius: 12px;
+    display: flex;
+    padding: 6px;
+    margin: 10px;
+  }
+
+  .icon1,
+  .icon2,
+  .icon3 {
+    font-size: 36px !important;
+    margin: 2px !important;
+  }
+
+  .home-search {
+    margin-left: 10px !important;
+  }
+  
+  .batch-btn {
+    margin-right: 10px !important;
+  }
+
+  .home-search{
+    width: 200px !important;
+  }
+  .home-count1,
+  .home-count2,
+  .home-count3{
+    font-size: 15px !important;
+  }
+
+}
