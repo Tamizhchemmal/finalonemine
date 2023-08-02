@@ -10,6 +10,7 @@ import {
   ModalTitle,
   CloseButton,
 } from "react-bootstrap";
+import { MdManageSearch } from "react-icons/md";
 import axios from "axios";
 import RefTable from "./RefTable";
 import { FcSearch } from "react-icons/fc";
@@ -34,37 +35,37 @@ function Referralpage() {
     companyname: "",
     password: "",
     confirmpassword: "",
-    role:"referral",
   });
 
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState({});
   const handleChange = (e) => {
     setRefinput({ ...refInput, [e.target.name]: e.target.value });
   };
 
+  const validation = (refInput) => {
+    let error = {};
+    if (refInput.password !== refInput.confirmpassword) {
+      error.confirmpassword = "Password should be same";
 
-  const submitReferral =async  (e) => {
+      return error;
+    } else {
+      return (error.confirmpwd = "");
+    }
+  };
+
+  const submitReferral = async (e) => {
     e.preventDefault();
-      if (refInput.password !== refInput.confirmpassword) {
-        setErrors('Password Should Be Same')
-      } else {
-        await axios.post("https://64a587de00c3559aa9bfdbd4.mockapi.io/refData", {
-        refInput,
-      });
-      setErrors('')
-      alert('Referral Created')
-      e.target.reset();
-      }
-   
-  
-   
-    
+    setErrors(validation(refInput));
+    await axios.post("https://64a587de00c3559aa9bfdbd4.mockapi.io/refData", {
+      refInput,
+    });
+    e.target.reset();
     console.log(refInput);
   };
   return (
     <>
       <div>
-        <NavBar/>
+        <NavBar />
         <div className="crd-bg">
           <div className="card-refdetails">
             <Container>
@@ -74,7 +75,7 @@ function Referralpage() {
                 <div
                   style={{
                     display: "flex",
-                    
+                    width: "50%",
                     justifyContent: "space-around",
                   }}
                 >
@@ -97,7 +98,6 @@ function Referralpage() {
               {/* /modal */}
               <Modal
                 show={show}
-                className="mods"
                 onHide={handleClose}
                 backdrop="static"
                 keyboard={false}
@@ -188,13 +188,15 @@ function Referralpage() {
                         ></input>
                       </div>
                     </div>
-                    {errors ? (
+                    {errors.confirmpassword && (
                       <p style={{ color: "red", textAlign: "center" }}>
-                      {errors}
+                        {errors.confirmpassword}
                       </p>
-                    ) : ""}
+                    )}
                     <Modal.Footer>
-                     
+                      <Button variant="secondary" onClick={handleClose}>
+                        Close
+                      </Button>
                       <button type="submit" id="btn-createrefmodal">
                         Create
                       </button>

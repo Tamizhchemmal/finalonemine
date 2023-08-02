@@ -2,15 +2,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
 .login-card {
   width: 35%;
-  max-width: 500px;
   height: 500px;
   border: 1px solid #002333;
   border-radius: 15px;
 }
 .login-card h2 {
   text-align: center;
-  margin: 10px 0 10px 0;
-  font-size: 15px;
+  margin: 20px 0 10px 0;
+  font-size: 30px;
   font-family: "Open Sans", sans-serif;
   font-weight: 7nnpm00;
   color: #002333;
@@ -36,15 +35,13 @@
 .btn-admin {
   border-color: #002333 !important;
   color: #002333 !important;
-  margin: 20px 0 50px 0 !important;
+  margin: 30px 0 50px 0 !important;
 }
-.style-heading{
-  text-align: center;
-}
+
 .style-heading span {
   font-family: "Josefin Sans", sans-serif;
-  font-size: 20px;
- 
+  font-size: 30px;
+  margin-left: 55px;
   background-image: linear-gradient(gold, gold);
   background-size: 100% 5px;
   background-repeat: no-repeat;
