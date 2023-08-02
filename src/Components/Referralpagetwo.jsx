@@ -15,7 +15,7 @@ import RefTable from "./RefTable";
 import { FcSearch } from "react-icons/fc";
 import NavBar from "./NavBar";
 
-function Referralpage() {
+function Referralpagetwo() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -27,29 +27,35 @@ function Referralpage() {
   };
 
   //creation
-  const [refInput, setRefinput] = useState({
-    fullname: "",
-    mobilenumber: "",
-    email: "",
-    companyname: "",
-    password: "",
-    confirmpassword: "",
-    role:"referral",
-  });
+//   const [refInput, setRefinput] = useState({
+//     fullname: "",
+//     mobilenumber: "",
+//     email: "",
+//     companyname: "",
+//     password: "",
+//     confirmpassword: "",
+//     role:"referral",
+//   });
+const[name,setName] = useState('')
+const [mobilenumber,setMobilenumber] = useState('')
+
+const [email,setEmail] = useState('')
+const[companyname,setCompanyName]= useState('')
+const[password,setPassword]=useState('')
+const[confirmpassword,setConfirmpassword]=useState('')
+
+const[role,setRole]=useState('referral')
 
   const [errors, setErrors] = useState('');
-  const handleChange = (e) => {
-    setRefinput({ ...refInput, [e.target.name]: e.target.value });
-  };
-
+ 
 
   const submitReferral =async  (e) => {
     e.preventDefault();
-      if (refInput.password !== refInput.confirmpassword) {
+      if (password !== confirmpassword) {
         setErrors('Password Should Be Same')
       } else {
         await axios.post("https://64a587de00c3559aa9bfdbd4.mockapi.io/refData", {
-        refInput,
+        name,email,password,confirmpassword,role,companyname,mobilenumber
       });
       setErrors('')
       alert('Referral Created')
@@ -59,7 +65,7 @@ function Referralpage() {
   
    
     
-    console.log(refInput);
+    console.log(name,mobilenumber,email);
   };
   return (
     <>
@@ -127,7 +133,7 @@ function Referralpage() {
                           name="fullname"
                           placeholder="Fullname"
                           autoComplete="new-password"
-                          onChange={handleChange}
+                          onChange={(e)=>{setName(e.target.value)}}
                           required
                         ></input>
                       </div>
@@ -139,7 +145,7 @@ function Referralpage() {
                           placeholder="Mobile Number"
                           pattern="[6789][0-9]{9}"
                           autoComplete="new-password"
-                          onChange={handleChange}
+                          onChange={(e)=>setMobilenumber(e.target.value)}
                           required
                         ></input>
                       </div>
@@ -151,7 +157,7 @@ function Referralpage() {
                           placeholder="Email Address"
                           pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                           required
-                          onChange={handleChange}
+                          onChange={(e)=>{setEmail(e.target.value)}}
                         ></input>
                       </div>
                       <div className="inputref">
@@ -161,7 +167,7 @@ function Referralpage() {
                           name="companyname"
                           placeholder="Company Name"
                           autoComplete="off"
-                          onChange={handleChange}
+                          onChange={(e)=>{setCompanyName(e.target.value)}}
                           required
                         ></input>
                       </div>
@@ -172,7 +178,7 @@ function Referralpage() {
                           name="password"
                           placeholder="Password"
                           autoComplete="off"
-                          onChange={handleChange}
+                          onChange={(e)=>{setPassword(e.target.value)}}
                           required
                         ></input>
                       </div>
@@ -183,7 +189,7 @@ function Referralpage() {
                           name="confirmpassword"
                           placeholder="Confirm Password"
                           autoComplete="off"
-                          onChange={handleChange}
+                          onChange={(e)=>{setConfirmpassword(e.target.value)}}
                           required
                         ></input>
                       </div>
@@ -216,4 +222,4 @@ function Referralpage() {
   );
 }
 
-export default Referralpage;
+export default Referralpagetwo;

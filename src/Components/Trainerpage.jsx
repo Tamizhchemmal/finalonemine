@@ -55,39 +55,27 @@ const columns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "yearofpassedout",
-    label: "Passed Out Year",
-    minWidth: 170,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  }, {
-    id: "startdate",
-    label: "Start Date",
+    id: "companyname",
+    label: "Company Name",
     minWidth: 170,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "feespaid",
-    label: "Fees Paid",
-    minWidth: 170,
+    id: "paymentmode",
+    label: "Payment Mode",
+    minWidth: 180,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "pendingfees",
-    label: "Pending Fees",
-    minWidth: 170,
+    id: "paymentmthoda",
+    label: "Payment Method",
+    minWidth: 180,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
-  {
-    id: "totalfees",
-    label: "Total Fees",
-    minWidth: 170,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
+
   {
     id: "edit/delete",
     label: "Edit/Delete",
@@ -95,44 +83,26 @@ const columns = [
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
- 
 ];
 //table
 
-function Studentpage() {
+function Trainerpage() {
   const [show, setShow] = useState(false);
   const [tableshow, setTableshow] = useState(false);
-  const [studentInput, setStudentinput] = useState({
+  const [search, setSearch] = useState("");
+  const [trainerInput, setTrainerinput] = useState({
     name: "",
     mobilenumber: "",
     email: "",
-    yearofpassedout: "",
-    referralname: "",
     course: "",
-    startdate: "",
-    enddate: "",
-    totalfees: "",
-    pendingfees: "",
-    feespaid: "",
-    college: "",
-    degree: "",
-    paymentmode:"",
+    companyname: "",
+    paymentmode: "",
+    password: "",
+    confirmpassword: "",
+    paymentdetails: "",
+    role: "trainer",
   });
-
-  const [refList, setRefList] = useState([
-    {
-      id: 1,
-      name: "Tamizh",
-    },
-    {
-      id: 2,
-      name: "Karthik",
-    },
-    {
-      id: 3,
-      name: "Patrick",
-    },
-  ]);
+  console.log(search);
   const [courseList, setCourseList] = useState([
     {
       id: 1,
@@ -156,12 +126,24 @@ function Studentpage() {
     },
   ]);
 
+  const [paymentmode, setPayment] = useState([
+    {
+      id: 1,
+      name: "GPAY NUMBER",
+    },
+    {
+      id: 2,
+      name: "UPI",
+    },
+    {
+      id: 3,
+      name: "BANK ACCOUNT",
+    },
+  ]);
+
   const handleChange = (e) => {
-    setStudentinput({ ...studentInput, [e.target.name]: e.target.value });
-    // handleStartDateChange({ [e.target.startDate]: e.target.value });
+    setTrainerinput({ ...trainerInput, [e.target.name]: e.target.value });
   };
-  const [startDate, setStartDate] = useState([]);
-  const [endDate, setEndDate] = useState([]);
 
   const handleClose = () => {
     setShow(false);
@@ -170,7 +152,7 @@ function Studentpage() {
     setShow(true);
   };
 
-  // Student Table Content
+  // Trainer Table Content
 
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
@@ -189,7 +171,7 @@ function Studentpage() {
 
   const callApiData = async (e) => {
     const refData = await axios.get(
-      "https://64bea16d5ee688b6250cba32.mockapi.io/StudentData"
+      "https://64b638a2df0839c97e1528f4.mockapi.io/trainers"
     );
     setApiData(refData.data);
   };
@@ -197,11 +179,11 @@ function Studentpage() {
   useEffect(() => {
     callApiData();
   }, []);
-  const deletestudentData = async (id) => {
+  const deleteTrainerData = async (id) => {
     await axios.delete(
-      "https://64bea16d5ee688b6250cba32.mockapi.io/StudentData/" + id
+      "https://64b638a2df0839c97e1528f4.mockapi.io/trainers/" + id
     );
-    alert("Student deleted");
+    alert("Referral deleted");
 
     callApiData();
   };
@@ -209,31 +191,27 @@ function Studentpage() {
   // Table content End
 
   // date Change
-  const handleStartDateChange = (e) => {
-    const selectedStartDate = new Date(e.target.value);
-    const selectedEndDate = new Date(selectedStartDate);
-    selectedEndDate.setMonth(selectedStartDate.getMonth() + 3);
-    const sDate = e.target.value;
-    setStartDate(sDate);
-    const eDate = selectedEndDate.toISOString().substr(0, 10);
-    setEndDate(eDate);
-    setStudentinput({ ...studentInput, startdate: sDate, enddate: eDate });
 
-    //Search function
-  };
-
+  const [errors, setErrors] = useState("");
   const submitStudent = async (e) => {
     e.preventDefault();
-    console.log(studentInput);
-    await axios.post(
-      "https://64bea16d5ee688b6250cba32.mockapi.io/StudentData",
-      { studentInput }
-    );
-    alert('Referral Created')
+
+    if (trainerInput.password !== trainerInput.confirmpassword) {
+      setErrors("Password Should Be Same");
+    } else {
+      await axios.post("https://64b638a2df0839c97e1528f4.mockapi.io/trainers", {
+        trainerInput,
+      });
+      console.log(trainerInput);
+      setErrors("");
+      alert("trainer Created");
+      setShow(false);
+      e.target.reset();
+    }
+
     e.target.reset();
   };
   //
-
 
   return (
     <>
@@ -243,25 +221,26 @@ function Studentpage() {
           <div className="card-refdetails">
             <Container>
               <div className="head-ref">
-                <div id="heading-ref">Student List</div>
+                <div id="heading-ref">Trainer List</div>
 
                 <div
                   style={{
                     display: "flex",
-                   
+
                     justifyContent: "space-around",
                   }}
                 >
                   <div className="search-full">
                     <input
                       type="search"
-                      placeholder="Search Student..."
+                      placeholder="Search Trainer..."
                       id="searchbar-ref"
+                      onChange={(e) => setSearch(e.target.value)}
                     ></input>
                     <FcSearch id="search-icon" />
                   </div>{" "}
                   <button className="create ref" onClick={handleShow}>
-                    Create Student
+                    Create Trainer
                   </button>
                 </div>
               </div>
@@ -282,14 +261,14 @@ function Studentpage() {
                   style={{ backgroundColor: " #002333 ", color: "white" }}
                 >
                   <Modal.Title style={{ color: "white" }}>
-                    Create Student Details
+                    Create Trainer Details
                   </Modal.Title>
 
                   <CloseButton variant="white" onClick={handleClose} />
                 </Modal.Header>
                 <Modal.Body>
                   <ModalTitle style={{ textAlign: "center" }}>
-                    CREATE AN ACCOUNT FOR STUDENT
+                    CREATE AN ACCOUNT FOR TRAINER
                   </ModalTitle>
                   <form onSubmit={submitStudent}>
                     <div className="inputref-box">
@@ -328,126 +307,46 @@ function Studentpage() {
                             onChange={handleChange}
                           ></input>
                         </div>
-                        <div className="inputstudent">
-                          <input
-                            type="number"
-                            name="yearofpassedout"
-                            placeholder="Year Of PassedOut"
-                            autoComplete="off"
-                            onChange={handleChange}
-                            required
-                          ></input>
-                        </div>
+
                         <div className="inputstudent">
                           <input
                             type="text"
                             id="input-name"
-                            name="college"
-                            placeholder="College"
+                            name="companyname"
+                            placeholder="Company Name"
                             autoComplete="new-password"
                             onChange={handleChange}
                             required
                           ></input>
                         </div>
-                        <div className="inputstudent">
-                          <input
-                            type="text"
-                            id="input-name"
-                            name="degree"
-                            placeholder="Degree"
-                            autoComplete="new-password"
-                            onChange={handleChange}
-                            required
-                          ></input>
-                        </div>
-                        <div className="inputstudent">
-                          <input
-                            type="number"
-                            name="totalfees"
-                            placeholder="Total fees"
-                            autoComplete="off"
-                            onChange={handleChange}
-                            required
-                          ></input>
-                        </div>
-                        <div className="inputstudent">
-                          <input
-                            type="number"
-                            name="feespaid"
-                            placeholder="Fees Paid"
-                            autoComplete="off"
-                            onChange={handleChange}
-                            required
-                          ></input>
-                        </div>
-                        <div className="inputstudent">
-                          <input
-                            type="number"
-                            name="pendingfees"
-                            placeholder="Pending Fees"
-                            autoComplete="off"
-                            onChange={handleChange}
-                            required
-                          ></input>
-                        </div>
-                        <div className="inputstudent">
-                          <input
-                            type="text"
-                            name="paymentmode"
-                            placeholder="Payment Mode"
-                            autoComplete="off"
-                            onChange={handleChange}
-                            required
-                          ></input>
-                        </div>
-                        <div style={{ marginLeft: "30px" }}>
-                          <label
-                            id="strt"
-                            htmlFor="startdate"
-                            className="text-muted"
-                          >
-                            Start date
-                          </label>
-                          <input
-                            type="date"
-                            id="startdate"
-                            name="startdate"
-                            placeholder="Start date"
-                            onChange={handleStartDateChange}
-                            required
-                          />
-                        </div>
-                        <div style={{ marginLeft: "30px" }}>
-                          <label id="end" className="text-muted">
-                            End date
-                          </label>
-                          <input
-                            type="date"
-                            id="enddate"
-                            name="enddate"
-                            placeholder="End date"
-                            value={endDate}
-                            readOnly
-                            disabled
-                            onChange={handleChange}
-                          />
-                        </div>
+
                         <div>
                           <select
-                            id="referralName"
-                            name="referralname"
+                            id="paymentmode"
+                            name="paymentmode"
                             className="referaldropdown"
                             required
                             onChange={handleChange}
                           >
-                            <option value="none">Referral name</option>
-                            {refList.map((data, index) => (
-                              <option key={index} value={index.name}>
-                                {data.name}
+                            <option value="none">Payment Mode</option>
+                            {paymentmode.map((paymentmode, index1) => (
+                              <option key={index1} value={paymentmode.name}>
+                                {paymentmode.name}
                               </option>
                             ))}
                           </select>
                         </div>
+                        <div className="inputstudent">
+                          <input
+                            type="text"
+                            name="paymentdetails"
+                            placeholder="Payment Details (Ac.no/Upi id)"
+                            autoComplete="off"
+                            onChange={handleChange}
+                            required
+                          ></input>
+                        </div>
+
                         <div>
                           <select
                             id="courseName"
@@ -464,8 +363,37 @@ function Studentpage() {
                             ))}
                           </select>
                         </div>
+                        <div className="inputtrainer">
+                          <input
+                            type="Password"
+                            id="input-pwd"
+                            name="password"
+                            placeholder="Password"
+                            autoComplete="off"
+                            onChange={handleChange}
+                            required
+                          ></input>
+                        </div>
+                        <div className="inputtrainer">
+                          <input
+                            type="Password"
+                            id="input-conpwd"
+                            name="confirmpassword"
+                            placeholder="Confirm Password"
+                            autoComplete="off"
+                            onChange={handleChange}
+                            required
+                          ></input>
+                        </div>
                       </div>
                     </div>
+                    {errors ? (
+                      <p style={{ color: "red", textAlign: "center" }}>
+                        {errors}
+                      </p>
+                    ) : (
+                      ""
+                    )}
                     <Modal.Footer>
                       <button type="submit" id="btn-createrefmodal">
                         Create
@@ -474,7 +402,7 @@ function Studentpage() {
                   </form>
                 </Modal.Body>
               </Modal>
-              {/* Table for Student */}
+              {/* Table for Trainer */}
               <div id="reftable">
                 <div className="tableData">
                   <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -504,6 +432,11 @@ function Studentpage() {
                               page * rowsPerPage,
                               page * rowsPerPage + rowsPerPage
                             )
+                            .filter((apiData) => {
+                              return search.toLowerCase() === ''
+                                ? apiData
+                                : apiData.trainerInput.name.toLowerCase().includes(search)
+                            })
                             .map((apiData) => {
                               return (
                                 <TableRow
@@ -517,7 +450,7 @@ function Studentpage() {
                                     style={{ fontSize: 16 }}
                                     // onClick={opnetable}
                                   >
-                                    {apiData.studentInput.name}
+                                    {apiData.trainerInput.name}
                                   </TableCell>
                                   <TableCell
                                     align="center"
@@ -525,7 +458,7 @@ function Studentpage() {
                                     style={{ fontSize: 16 }}
                                     // onClick={opnetable}
                                   >
-                                    {apiData.studentInput.mobilenumber}
+                                    {apiData.trainerInput.mobilenumber}
                                   </TableCell>
                                   <TableCell
                                     align="center"
@@ -533,7 +466,7 @@ function Studentpage() {
                                     style={{ fontSize: 16 }}
                                     // onClick={opnetable}
                                   >
-                                    {apiData.studentInput.email}
+                                    {apiData.trainerInput.email}
                                   </TableCell>
                                   <TableCell
                                     align="center"
@@ -541,7 +474,7 @@ function Studentpage() {
                                     style={{ fontSize: 16 }}
                                     // onClick={opnetable}
                                   >
-                                     {apiData.studentInput.course}
+                                    {apiData.trainerInput.course}
                                   </TableCell>
                                   <TableCell
                                     align="center"
@@ -549,7 +482,7 @@ function Studentpage() {
                                     style={{ fontSize: 16 }}
                                     // onClick={opnetable}
                                   >
-                                   {apiData.studentInput.yearofpassedout}
+                                    {apiData.trainerInput.companyname}
                                   </TableCell>
                                   <TableCell
                                     align="center"
@@ -557,7 +490,7 @@ function Studentpage() {
                                     style={{ fontSize: 16 }}
                                     // onClick={opnetable}
                                   >
-                                   {apiData.studentInput.startdate}
+                                    {apiData.trainerInput.paymentmode}
                                   </TableCell>
                                   <TableCell
                                     align="center"
@@ -565,24 +498,9 @@ function Studentpage() {
                                     style={{ fontSize: 16 }}
                                     // onClick={opnetable}
                                   >
-                                   {apiData.studentInput.feespaid}
+                                    {apiData.trainerInput.paymentdetails}
                                   </TableCell>
-                                  <TableCell
-                                    align="center"
-                                    id="table-body"
-                                    style={{ fontSize: 16 }}
-                                    // onClick={opnetable}
-                                  >
-                                   {apiData.studentInput.pendingfees}
-                                  </TableCell>
-                                  <TableCell
-                                    align="center"
-                                    id="table-body"
-                                    style={{ fontSize: 16 }}
-                                    // onClick={opnetable}
-                                  >
-                                   {apiData.studentInput.totalfees}
-                                  </TableCell>
+
                                   <TableCell
                                     align="center"
                                     id="table-body"
@@ -594,7 +512,9 @@ function Studentpage() {
                                     />
                                     <MdDelete
                                       id="dlt-icon"
-                                      onClick={() => deletestudentData(apiData.id)}
+                                      onClick={() =>
+                                        deleteTrainerData(apiData.id)
+                                      }
                                     />
                                   </TableCell>
                                 </TableRow>
@@ -679,4 +599,4 @@ function Studentpage() {
   );
 }
 
-export default Studentpage;
+export default Trainerpage;
