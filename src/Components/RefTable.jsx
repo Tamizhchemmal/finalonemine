@@ -1,5 +1,5 @@
 import Form from "react-bootstrap/Form";
-import React from "react";
+import React, { useRef } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,7 +7,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Avatar from "@mui/material/Avatar";
 import TablePagination from "@mui/material/TablePagination";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +24,7 @@ import { Card } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
+import Modalpopup from "./Modalpopup";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100, align: "center" },
@@ -59,8 +59,8 @@ const columns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "",
-    label: "",
+    id: "Edit/Delete",
+    label: "Edit/Delete",
     minWidth: 170,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
@@ -70,19 +70,13 @@ const columns = [
 // const rows = [];
 
 export default function RefTable() {
-  const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showRef , setShowref]=  useState([])
 
-  const handleClose = () => {
-    setShow(false);
-  };
+
   const handleShow = () => {};
 
   const navigate = useNavigate();
-  const referralCreate = (e) => {
-    e.preventDefault();
-    // navigate("/referraldetails");
-  };
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [alertt, setAlertt] = useState(null);
@@ -107,9 +101,20 @@ export default function RefTable() {
   useEffect(() => {
     callApiData();
   }, []);
-  const opnetable = (apiData) => {
-    setShow(true);
-  };
+   
+
+
+  
+ 
+  const opnetable = async(apiData) => {
+    setShowref(apiData);
+    setShowModal(true)
+   
+   
+  }
+  const handleCloseModal=(e) => { setShowModal(false); }
+
+
   const handleedit = (e) => {
     alert("button");
   };
@@ -161,12 +166,12 @@ export default function RefTable() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((apiData) => {
                     return (
-                      <TableRow key={apiData.id} hover role="checkbox">
+                      <TableRow key={apiData.id} hover role="checkbox" >
                         <TableCell
                           align="center"
                           id="table-body"
                           style={{ fontSize: 16 }}
-                          onClick={opnetable}
+                          onClick={()=>opnetable(apiData)}
                         >
                           {apiData.name}
                         </TableCell>
@@ -174,7 +179,7 @@ export default function RefTable() {
                           align="center"
                           id="table-body"
                           style={{ fontSize: 16 }}
-                          onClick={opnetable}
+                          onClick={()=>opnetable(apiData)}
                         >
                           {apiData.mobilenumber}
                         </TableCell>
@@ -182,7 +187,7 @@ export default function RefTable() {
                           align="center"
                           id="table-body"
                           style={{ fontSize: 16 }}
-                          onClick={opnetable}
+                          onClick={()=>opnetable(apiData)}
                         >
                           {apiData.email}
                         </TableCell>
@@ -190,7 +195,7 @@ export default function RefTable() {
                           align="center"
                           id="table-body"
                           style={{ fontSize: 16 }}
-                          onClick={opnetable}
+                          onClick={()=>opnetable(apiData)}
                         >
                           12
                         </TableCell>
@@ -198,7 +203,7 @@ export default function RefTable() {
                           align="center"
                           id="table-body"
                           style={{ fontSize: 16 }}
-                          onClick={opnetable}
+                          onClick={()=>opnetable(apiData)}
                         >
                           {" "}
                           <Type count={15} />
@@ -234,65 +239,12 @@ export default function RefTable() {
           />
         </Paper>
         {/* model profile */}
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header
-            style={{ backgroundColor: " #002333 ", color: "white" }}
-          >
-            <Modal.Title style={{ color: "white" }}>
-              Referral Profile
-            </Modal.Title>
-
-            <CloseButton variant="white" onClick={handleClose} />
-          </Modal.Header>
-          <Modal.Body>
-            <div>
-              <Card
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  height: "400px",
-                  boxShadow: "rgba(66, 84, 102, 0.1) 0px 8px 25px ",
-                }}
-              >
-                <Card
-                  sx={{
-                    width: "50%",
-                    height: "70%",
-                    margin: "15px 15px",
-                    boxShadow: "rgba(66, 84, 102, 0.3) 0px 8px 25px ",
-                  }}
-                >
-                  {/* <Avatar
-                    alt="Remy Sharp"
-                    src={profile}
-                    sx={{ width: 85, height: 85, margin: "15px 30px" }}
-                  /> */}
-                  <div style={{ margin: "10px 30px", fontSize: "18px" }}>
-                    Name : XXXX
-                  </div>
-                </Card>
-              </Card>
-            </div>
-            <hr></hr>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <button type="submit" id="btn-createrefmodal">
-                Create
-              </button>
-            </Modal.Footer>
-          </Modal.Body>
-        </Modal>
+     
       </div>
+      {
+       showRef &&  <Modalpopup user={showRef} showmodal={showModal} onClosemodal={handleCloseModal}/>
+      }
+     
     </>
   );
 }

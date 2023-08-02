@@ -5,8 +5,8 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 .card-refdetails {
-  width: 85%;
-  height: 800px;
+  width: 80%;
+  height: 100vh;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 25px;
   background-color: rgb(255, 255, 255);
@@ -29,6 +29,7 @@ input::-webkit-inner-spin-button {
   margin: 20px 15px 10px 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 #searchbar-ref {
   position: relative;
@@ -67,12 +68,13 @@ input::-webkit-inner-spin-button {
 }
 
 .create {
+  width: 30%;
   padding: 10px 15px;
   border-radius: 5px;
   background-color: #002333;
   color: white;
   font-size: 18px;
-  margin: 15px 0 0 0;
+  margin: 15px 0 0 15px;
   font-family: "Poppins", sans-serif;
 }
 .create:hover {
@@ -153,7 +155,7 @@ input::-webkit-inner-spin-button {
   outline: none;
   margin: 10px 10px 10px 13px;
   border-radius: 10px;
-} 
+}
 #startdate,
 #enddate {
   width: 73%;
@@ -172,4 +174,89 @@ input::-webkit-inner-spin-button {
   font-size: 25px;
   margin: 0 10px;
   cursor: pointer;
+}
+
+/* Traier */
+.inputtrainer {
+  width: auto;
+  display: flex;
+  justify-content: center;
+}
+.inputtrainer input {
+  width: 93%;
+  padding: 10px 15px;
+  border: none;
+  outline: none;
+  margin: 10px 0 10px 0;
+  border-radius: 10px;
+}
+.inputtrainer input:focus {
+  box-shadow: rgba(0, 40, 97, 0.2) 2px 2px 25px;
+}
+
+.mods{
+  z-index: 9999 !important;
+  
+}
+
+
+@media screen and (max-width:1010px) {
+  #heading-ref{
+    font-size: 20px;
+  }
+  #searchbar-ref {
+  width: 300px;
+}
+.create {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 15px;
+ 
+}
+}
+@media screen and (max-width:814px) {
+  #heading-ref{
+    font-size: 18px;
+  }
+  #searchbar-ref {
+  width: 280px;
+  font-size: 15px;
+}
+.create {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 12px;
+ 
+}
+}
+@media screen and (max-width:768px) {
+  #heading-ref{
+    font-size: 15px;
+  }
+  #searchbar-ref {
+  width: 200px;
+  font-size: 15px;
+}
+.create {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 12px;
+ 
+}
+}
+
+@media screen and (max-width:500px) {
+  #heading-ref{
+    font-size: 10px;
+
+  }
+  #searchbar-ref {
+  width: 100px;
+  font-size: 10px;
+}
+.create {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 10px;
+}
 }
